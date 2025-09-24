@@ -1,9 +1,9 @@
 <template>
-  <div>
-    Hello, World!
-  </div>
+  <q-page padding>
+    <!-- content -->
+  </q-page>
 </template>
 
 <script setup lang="ts">
-
+//
 </script>

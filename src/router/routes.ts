@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '',
+    name: 'home',
     component: () => import('pages/IndexPage.vue'),
   },
 
@@ -10,8 +11,8 @@ const routes: RouteRecordRaw[] = [
     path: '/roulette',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: 'game-page', component: () => import('pages/GamePage.vue') },
-      { path: 'history-page', component: () => import('pages/HistoryPage.vue') },
+      { path: 'game-page', name: 'game', component: () => import('pages/GamePage.vue') },
+      { path: 'history-page', name: 'history', component: () => import('pages/HistoryPage.vue') },
     ],
   },
 

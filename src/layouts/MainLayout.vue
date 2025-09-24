@@ -1,81 +1,86 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+  <div>
+    <q-layout view="lHh Lpr lff" container style="height: 100vh">
+      <q-header elevated class="bg-cyan-8">
+        <q-toolbar>
+          <q-toolbar-title>
+            <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+            RouletteGame
+          </q-toolbar-title>
+          <div v-if="!drawer" class="text-weight-bold text-h5">Balance: ${{ balance }}</div>
+        </q-toolbar>
+      </q-header>
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+      <q-drawer v-model="drawer" show-if-above :width="200" :breakpoint="400">
+        <q-scroll-area
+          style="height: calc(100% - 200px); margin-top: 200px; border-right: 1px solid #ddd"
+        >
+          <q-list padding>
+            <q-item :to="{name: 'game'}" clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="casino" />
+              </q-item-section>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+              <q-item-section> Juego de la ruleta</q-item-section>
+            </q-item>
+            <q-item :to="{name: 'history'}" clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="history" />
+              </q-item-section>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+              <q-item-section> Historial de juego</q-item-section>
+            </q-item>
+            <q-item active clickable v-ripple active-class="text-negative" @click="logout">
+              <q-item-section avatar>
+                <q-icon name="exit_to_app" />
+              </q-item-section>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
+              <q-item-section> Salir</q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+        <q-img
+          class="absolute-top"
+          src="https://cdn.quasar.dev/img/material.png"
+          style="height: 200px"
+        >
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="avatar"/>
+            </q-avatar>
+            <div class="text-weight-bold text-h5">Hola {{ name }}</div>
+            <div class="text-weight-bold">balance:</div>
+            <div class="text-weight-bold text-h4">${{ balance }}</div>
+          </div>
+        </q-img>
+      </q-drawer>
+
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+    </q-layout>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import { onMounted, ref } from 'vue';
+import { useWalletStore } from 'stores/wallet';
+import { useRouter } from 'vue-router';
 
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-];
+const walletStore = useWalletStore();
+const drawer = ref(false);
+const name = ref('');
+const balance = ref(0);
+const router = useRouter();
 
-const leftDrawerOpen = ref(false);
+onMounted(() => {
+  name.value = walletStore.name;
+  balance.value = walletStore.balance;
+});
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+async function logout() {
+  walletStore.logout();
+  await router.push({name: 'home'});
 }
 </script>

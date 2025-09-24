@@ -1,6 +1,8 @@
 <template>
   <q-page padding>
     <!-- content -->
+
+    history page
   </q-page>
 </template>
 

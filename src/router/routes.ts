@@ -2,16 +2,16 @@ import type { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    path: '',
+    component: () => import('pages/IndexPage.vue'),
   },
 
   {
     path: '/roulette',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/game-page', component: () => import('pages/GamePage.vue') },
-      { path: '/history-page', component: () => import('pages/HistoryPage.vue') }
+      { path: 'game-page', component: () => import('pages/GamePage.vue') },
+      { path: 'history-page', component: () => import('pages/HistoryPage.vue') },
     ],
   },
 

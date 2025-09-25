@@ -16,7 +16,6 @@ export const useHistoryStore = defineStore('history', {
         ...bet,
         timestamp: new Date().toLocaleString()
       })
-      // Quasar LocalStorage ya serializa el objeto
       LocalStorage.set('betHistory', this.bets)
     },
     loadHistory() {

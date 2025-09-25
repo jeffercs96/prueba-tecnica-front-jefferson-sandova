@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { useHistoryStore } from 'stores/history'
+import { type QTableColumn } from 'quasar';
 
 const history = useHistoryStore()
 history.loadHistory()
@@ -39,5 +40,5 @@ const columns = [
   { name: 'isWin', label: 'Resultado', field: 'isWin', align: 'center' },
   { name: 'payout', label: 'Premio', field: 'payout', align: 'right' },
   { name: 'newBalance', label: 'Saldo', field: 'newBalance', align: 'right' },
-]
+] as QTableColumn[]
 </script>

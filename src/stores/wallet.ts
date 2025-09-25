@@ -24,8 +24,8 @@ export const useWalletStore = defineStore('wallet', {
       this.balance = res.data.balance
       this.saveToStorage()
     },
-    async updateWallet(name: string, amount:number) {
-      const res = await api.put('/api/Wallet/update', { name, amount })
+    async updateWallet(name: string, balance:number) {
+      const res = await api.put('/api/Wallet/update', { name, balance })
       this.balance = res.data.balance
       this.saveToStorage()
     },
@@ -34,6 +34,10 @@ export const useWalletStore = defineStore('wallet', {
       this.balance = 0
       LocalStorage.remove('walletName')
       LocalStorage.remove('walletBalance')
+    },
+    updateBalance(amount: number) {
+      this.balance = amount
+      this.saveToStorage()
     }
   },
 });

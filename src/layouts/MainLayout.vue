@@ -7,7 +7,6 @@
             <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
             RouletteGame
           </q-toolbar-title>
-          <div v-if="!drawer" class="text-weight-bold text-h5">Balance: ${{ balance }}</div>
         </q-toolbar>
       </q-header>
 
@@ -23,12 +22,12 @@
 
               <q-item-section> Juego de la ruleta</q-item-section>
             </q-item>
-            <q-item :to="{name: 'history'}" clickable v-ripple>
+            <q-item :to="{name: 'load-credit'}" clickable v-ripple>
               <q-item-section avatar>
-                <q-icon name="history" />
+                <q-icon name="account_balance_wallet" />
               </q-item-section>
 
-              <q-item-section> Historial de juego</q-item-section>
+              <q-item-section>Cargar Saldo</q-item-section>
             </q-item>
             <q-item active clickable v-ripple active-class="text-negative" @click="logout">
               <q-item-section avatar>
@@ -49,9 +48,9 @@
             <q-avatar size="56px" class="q-mb-sm">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" alt="avatar"/>
             </q-avatar>
-            <div class="text-weight-bold text-h5">Hola {{ name }}</div>
+            <div class="text-weight-bold text-h5">Hola {{ walletStore.name }}</div>
             <div class="text-weight-bold">balance:</div>
-            <div class="text-weight-bold text-h4">${{ balance }}</div>
+            <div class="text-weight-bold text-h4">${{ walletStore.balance }}</div>
           </div>
         </q-img>
       </q-drawer>
@@ -64,23 +63,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useWalletStore } from 'stores/wallet';
 import { useRouter } from 'vue-router';
+import { useHistoryStore } from 'stores/history';
 
 const walletStore = useWalletStore();
+const historyStore = useHistoryStore();
 const drawer = ref(false);
-const name = ref('');
-const balance = ref(0);
 const router = useRouter();
-
-onMounted(() => {
-  name.value = walletStore.name;
-  balance.value = walletStore.balance;
-});
 
 async function logout() {
   walletStore.logout();
   await router.push({name: 'home'});
+  historyStore.clearHistory();
 }
 </script>

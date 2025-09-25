@@ -5,14 +5,16 @@ const routes: RouteRecordRaw[] = [
     path: '',
     name: 'home',
     component: () => import('pages/IndexPage.vue'),
+    meta: { guestOnly: true }
   },
 
   {
     path: '/roulette',
     component: () => import('layouts/MainLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
       { path: 'game-page', name: 'game', component: () => import('pages/GamePage.vue') },
-      { path: 'history-page', name: 'history', component: () => import('pages/HistoryPage.vue') },
+      { path: 'load-credit-page', name: 'load-credit', component: () => import('pages/LoadCreditPage.vue') },
     ],
   },
 
